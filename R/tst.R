@@ -255,9 +255,9 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8) {
     }
 
   #Print citation disclaimer
-  print("Asymptotically approximate equivalence confidence intervals (ECIs), regions of statistical equivalence (ROSEs), and three-sided testing (TST) results reported")
-  print("If using for academic/research purposes, please cite the paper underlying this program:")
-  print("Fitzgerald, Jack (2024). The Need for Equivalence Testing in Economics. Institute for Replication Discussion Paper Series No. 125. https://www.econstor.eu/handle/10419/296190.")
+  noquote("Asymptotically approximate equivalence confidence intervals (ECIs), regions of statistical equivalence (ROSEs), and three-sided testing (TST) results reported")
+  noquote("If using for academic/research purposes, please cite the paper underlying this program:")
+  noquote("Fitzgerald, Jack (2024). The Need for Equivalence Testing in Economics. Institute for Replication Discussion Paper Series No. 125. https://www.econstor.eu/handle/10419/296190.")
   #Store output
   output = list(bounds, test, conclusion)
   names(output) = c("bounds", "test", "conclusion")
@@ -360,9 +360,9 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8) {
 
 
     #Print citation disclaimer
-    print("Exact equivalence confidence intervals (ECIs), regions of statistical equivalence (ROSEs), and three-sided testing (TST) results reported")
-    print("If using for academic/research purposes, please cite the paper underlying this program:")
-    print("Fitzgerald, Jack (2024). The Need for Equivalence Testing in Economics. Institute for Replication Discussion Paper Series No. 125. https://www.econstor.eu/handle/10419/296190.")
+    noquote("Exact equivalence confidence intervals (ECIs), regions of statistical equivalence (ROSEs), and three-sided testing (TST) results reported")
+    noquote("If using for academic/research purposes, please cite the paper underlying this program:")
+    noquote("Fitzgerald, Jack (2024). The Need for Equivalence Testing in Economics. Institute for Replication Discussion Paper Series No. 125. https://www.econstor.eu/handle/10419/296190.")
     #Store output
     output = list(bounds, test)
     names(output) = c("bounds", "test")
