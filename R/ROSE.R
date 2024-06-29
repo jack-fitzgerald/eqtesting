@@ -9,9 +9,6 @@
 ##### INIT #####
 ################
 
-#Set working directory to THE NEED FOR EQUIVALENCE TESTING IN ECONOMICS
-root = getwd()
-
 ROSE = function(estimate, se, alpha = 0.05, power_target = 0.8, df = NA) {
 
   ##################
