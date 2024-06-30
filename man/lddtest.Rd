@@ -46,7 +46,7 @@ Running this code automatically prints a citation disclaimer.
 }
   \references{
 Dimmery, Drew (2016). rdd: Regression discontinuity designs. https://doi.org/10.32614/CRAN.package.rdd.
-Fitzgerald, Jack (2024). Manipulation Tests in Regression Discontinuity: The Need for Equivalence Testing. Working paper. https://jack-fitzgerald.github.io/files/RDD_equivalence.pdf.
+Fitzgerald, Jack (2024). Manipulation Tests in Regression Discontinuity Design: The Need for Equivalence Testing. Working paper. https://jack-fitzgerald.github.io/files/RDD_equivalence.pdf.
 McCrary, Justin (2008). Manipulation of the running variable in the regression discontinuity design: A density test. Journal of Econometrics 142(2), 698-714.
   }
 \author{
