@@ -109,7 +109,7 @@ lddtest = function(runvar, cutpoint, epsilon, alpha = 0.05, power = 0.8, bin = N
   
   #Print citation disclaimer
   print(noquote("Please cite the paper underlying this program:"))
-  print(noquote("Fitzgerald, Jack (2024). Manipulation Tests in Regression Discontinuity: The Need for Equivalence Testing. Working paper. https://jack-fitzgerald.github.io/files/RDD_equivalence.pdf."))
+  print(noquote("Fitzgerald, Jack (2024). Manipulation Tests in Regression Discontinuity Design: The Need for Equivalence Testing. Working paper. https://jack-fitzgerald.github.io/files/RDD_equivalence.pdf."))
   #Store output
   output = list(bounds, test, conclusion)
   names(output) = c("bounds", "test", "conclusion")
