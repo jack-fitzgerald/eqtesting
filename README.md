@@ -1,4 +1,4 @@
-# eqtesting
+# eqtesting: Equivalence testing in R
 
 You can install this package directly into R with the following code:
 ```
