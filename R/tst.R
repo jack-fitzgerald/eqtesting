@@ -364,7 +364,7 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8) {
     print(noquote("If using for academic/research purposes, please cite the paper underlying this program:"))
     print(noquote("Fitzgerald, Jack (2024). The Need for Equivalence Testing in Economics. Institute for Replication Discussion Paper Series No. 125. https://www.econstor.eu/handle/10419/296190."))
     #Store output
-    output = list(bounds, test)
+    output = list(bounds, test, conclusion)
     names(output) = c("bounds", "test", "conclusion")
     #Return bounds
     return(output)
