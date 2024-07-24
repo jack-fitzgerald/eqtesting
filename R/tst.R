@@ -300,7 +300,7 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8) {
     test[1, 3] = (estimate - ROPE[2])/se
     test[1, 4] = pt(test[1, 3], df = df, lower.tail = FALSE)
 
-    #If the lower bound of the ROPE is the relevant TOST bound...
+    #If the lower bound of the ROPE is the  TOST bound...
     if (bound == ROPE[1]) {
 
       #Store the t-statistic as estimate - min(ROPE) in standard error units
@@ -309,7 +309,7 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8) {
       test[2, 4] = pt(test[2, 3], df = df, lower.tail = FALSE)
 
     }
-    #If the upper bound of the ROPE is the relevant TOST bound...
+    #If the upper bound of the ROPE is the  TOST bound...
     if (bound == ROPE[2]) {
 
       #Store the t-statistic as estimate - max(ROPE) in standard error units
@@ -327,7 +327,7 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8) {
     relevant = which(test[, 4] == min(test[, 4]))[1]
     #Mark test relevance
     test[relevant, 5] = "Y"
-    test[setdiff(c(1:3), relevant)] = "N"
+    test[setdiff(c(1:3), relevant), 5] = "N"
 
     #If no p-value is below alpha...
     if (min(test[, 4]) >= alpha) {
