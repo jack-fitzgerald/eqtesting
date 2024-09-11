@@ -177,9 +177,9 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8) {
     #Generate test dataframe
     test = as.data.frame(matrix(nrow = 3, ncol = 5))
     colnames(test) = c("ROPE Lower Bound", "ROPE Upper Bound", "z-statistic", "p-value", "Relevant")
-    rownames(test) = c("Test: Estimate Bounded Above ROPE (One-Sided)",
+    rownames(test) = c("Test: Estimate Bounded Above ROPE (Two-Sided)",
                        "Test: Estimate Bounded Within ROPE (TOST)",
-                       "Test: Estimate Bounded Below ROPE (One-Sided)")
+                       "Test: Estimate Bounded Below ROPE (Two-Sided)")
 
     #Generate the bounds of the ECI
     bounds[1, 1] = estimate - qnorm(p = 1 - alpha)*se
@@ -197,7 +197,7 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8) {
     test[, 1] = rep(ROPE[1], 3)
     test[, 2] = rep(ROPE[2], 3)
 
-    #Store the z-statistic and p-value of the one-sided test for bounding above the ROPE
+    #Store the z-statistic and p-value of the two-sided test for bounding above the ROPE
     test[1, 3] = (estimate - ROPE[2])/se
     test[1, 4] = min(pnorm(test[1, 3], lower.tail = FALSE)*2, 1)
 
@@ -220,7 +220,7 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8) {
 
     }
 
-    #Store the z-statistic and p-value of the one-sided test for bounding below the ROPE
+    #Store the z-statistic and p-value of the two-sided test for bounding below the ROPE
     test[3, 3] = (estimate - ROPE[1])/se
     test[3, 4] = min(pnorm(test[3, 3], lower.tail = TRUE)*2, 1)
 
@@ -294,9 +294,9 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8) {
     #Generate test dataframe
     test = as.data.frame(matrix(nrow = 3, ncol = 5))
     colnames(test) = c("ROPE Lower Bound", "ROPE Upper Bound", "t-statistic", "p-value", "Relevant")
-    rownames(test) = c("Test: Estimate Bounded Above ROPE (One-Sided)",
+    rownames(test) = c("Test: Estimate Bounded Above ROPE (Two-Sided)",
                        "Test: Estimate Bounded Within ROPE (TOST)",
-                       "Test: Estimate Bounded Below ROPE (One-Sided)")
+                       "Test: Estimate Bounded Below ROPE (Two-Sided)")
 
     #Generate the bounds of the ECI
     bounds[1, 1] = estimate - qt(p = 1 - alpha, df = df)*se
@@ -314,7 +314,7 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8) {
     test[, 1] = rep(ROPE[1], 3)
     test[, 2] = rep(ROPE[2], 3)
 
-    #Store the t-statistic and p-value of the one-sided test for bounding above the ROPE
+    #Store the t-statistic and p-value of the two-sided test for bounding above the ROPE
     test[1, 3] = (estimate - ROPE[2])/se
     test[1, 4] = min(pt(test[1, 3], df = df, lower.tail = FALSE)*2, 1)
 
@@ -337,7 +337,7 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8) {
 
     }
 
-    #Store the t-statistic and p-value of the one-sided test for bounding below the ROPE
+    #Store the t-statistic and p-value of the two-sided test for bounding below the ROPE
     test[3, 3] = (estimate - ROPE[1])/se
     test[3, 4] = min(pt(test[3, 3], df = df, lower.tail = TRUE)*2, 1)
 
