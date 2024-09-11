@@ -150,9 +150,10 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8) {
   }
 
   #Generate bounds dataframe
-  bounds = as.data.frame(matrix(nrow = 2, ncol = 2))
+  bounds = as.data.frame(matrix(nrow = 3, ncol = 2))
   colnames(bounds) = c("Lower Bound", "Upper Bound")
   rownames(bounds) = c(paste0(round((1 - alpha)*100, 3), "% equivalence confidence interal (ECI)"),
+                       paste0(round((1 - alpha)*100, 3), "% confidence interal"),
                        paste0(round((1 - alpha)*100, 3), "% region of statistical equivalence (ROSE) with ", round(power*100, 3), "% power"))
 
   #If the estimate is exactly midway between the lower and upper bounds of the ROPE...
@@ -184,9 +185,13 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8) {
     bounds[1, 1] = estimate - qnorm(p = 1 - alpha)*se
     bounds[1, 2] = estimate + qnorm(p = 1 - alpha)*se
 
+    #Generate the bounds of the CI
+    bounds[1, 1] = estimate - qnorm(p = 1 - alpha/2)*se
+    bounds[1, 2] = estimate + qnorm(p = 1 - alpha/2)*se
+
     #Generate the bounds of the ROSE
-    bounds[2, 1] = ROSE(estimate, se, alpha, power)$ROSE["Lower bound"]
-    bounds[2, 2] = ROSE(estimate, se, alpha, power)$ROSE["Upper bound"]
+    bounds[3, 1] = ROSE(estimate, se, alpha, power)$ROSE["Lower bound"]
+    bounds[3, 2] = ROSE(estimate, se, alpha, power)$ROSE["Upper bound"]
 
     #Store the ROPE
     test[, 1] = rep(ROPE[1], 3)
@@ -297,9 +302,13 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8) {
     bounds[1, 1] = estimate - qt(p = 1 - alpha, df = df)*se
     bounds[1, 2] = estimate + qt(p = 1 - alpha, df = df)*se
 
+    #Generate the bounds of the ECI
+    bounds[2, 1] = estimate - qt(p = 1 - alpha/2, df = df)*se
+    bounds[2, 2] = estimate + qt(p = 1 - alpha/2, df = df)*se
+
     #Generate the bounds of the ROSE
-    bounds[2, 1] = ROSE(estimate, se, alpha, power, df)$ROSE["Lower bound"]
-    bounds[2, 2] = ROSE(estimate, se, alpha, power, df)$ROSE["Upper bound"]
+    bounds[3, 1] = ROSE(estimate, se, alpha, power, df)$ROSE["Lower bound"]
+    bounds[3, 2] = ROSE(estimate, se, alpha, power, df)$ROSE["Upper bound"]
 
     #Store the ROPE
     test[, 1] = rep(ROPE[1], 3)
