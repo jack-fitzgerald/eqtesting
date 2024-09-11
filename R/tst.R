@@ -194,7 +194,7 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8) {
 
     #Store the z-statistic and p-value of the one-sided test for bounding above the ROPE
     test[1, 3] = (estimate - ROPE[2])/se
-    test[1, 4] = pnorm(test[1, 3], lower.tail = FALSE)
+    test[1, 4] = pnorm(test[1, 3], lower.tail = FALSE)*2
 
     #If the lower bound of the ROPE is the relevant TOST bound...
     if (bound == ROPE[1]) {
@@ -217,10 +217,19 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8) {
 
     #Store the z-statistic and p-value of the one-sided test for bounding below the ROPE
     test[3, 3] = (estimate - ROPE[1])/se
-    test[3, 4] = pnorm(test[3, 3], lower.tail = TRUE)
+    test[3, 4] = pnorm(test[3, 3], lower.tail = TRUE)*2
 
     #Determine relevant test
-    relevant = which(test[, 4] == min(test[, 4]))[1]
+    if (estimate > ROPE[2]) {
+      relevant = 1
+    }
+    if (estimate >= ROPE[1] & estimate <= ROPE[2]) {
+      relevant = 2
+    }
+    if (estimate < ROPE[1]) {
+      relevant = 3
+    }
+
     #Mark test relevance
     test[relevant, 5] = "Y"
     test[setdiff(c(1:3), relevant), 5] = "N"
@@ -298,7 +307,7 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8) {
 
     #Store the t-statistic and p-value of the one-sided test for bounding above the ROPE
     test[1, 3] = (estimate - ROPE[2])/se
-    test[1, 4] = pt(test[1, 3], df = df, lower.tail = FALSE)
+    test[1, 4] = pt(test[1, 3], df = df, lower.tail = FALSE)*2
 
     #If the lower bound of the ROPE is the  TOST bound...
     if (bound == ROPE[1]) {
@@ -321,10 +330,19 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8) {
 
     #Store the t-statistic and p-value of the one-sided test for bounding below the ROPE
     test[3, 3] = (estimate - ROPE[1])/se
-    test[3, 4] = pt(test[3, 3], df = df, lower.tail = TRUE)
+    test[3, 4] = pt(test[3, 3], df = df, lower.tail = TRUE)*2
 
     #Determine relevant test
-    relevant = which(test[, 4] == min(test[, 4]))[1]
+    if (estimate > ROPE[2]) {
+      relevant = 1
+    }
+    if (estimate >= ROPE[1] & estimate <= ROPE[2]) {
+      relevant = 2
+    }
+    if (estimate < ROPE[1]) {
+      relevant = 3
+    }
+    
     #Mark test relevance
     test[relevant, 5] = "Y"
     test[setdiff(c(1:3), relevant), 5] = "N"
