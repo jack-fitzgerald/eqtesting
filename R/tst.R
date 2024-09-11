@@ -186,8 +186,8 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8) {
     bounds[1, 2] = estimate + qnorm(p = 1 - alpha)*se
 
     #Generate the bounds of the CI
-    bounds[1, 1] = estimate - qnorm(p = 1 - alpha/2)*se
-    bounds[1, 2] = estimate + qnorm(p = 1 - alpha/2)*se
+    bounds[2, 1] = estimate - qnorm(p = 1 - alpha/2)*se
+    bounds[2, 2] = estimate + qnorm(p = 1 - alpha/2)*se
 
     #Generate the bounds of the ROSE
     bounds[3, 1] = ROSE(estimate, se, alpha, power)$ROSE["Lower bound"]
