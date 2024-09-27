@@ -2,11 +2,11 @@
 #estimate: The estimate of interest; numeric scalar
 #se: The estimate of interest's standard error; numeric scalar greater than zero
 #ROPE: Can either be a strictly positive numeric scalar (interpreted as the width of a symmetric ROPE around zero), or a vector of two different numeric scalars
-#df: If added, must be a positive integer. If left blank, asymptotic normal approximations are reported for ECIs and ROSEs. If provided, exact ECIs and ROSEs are reported
+#df: If added, must be a positive integer. If left blank, asymptotic normal approximations are reported. If provided, exact results are reported
 #alpha: Defaults to 0.05. If provided, must be a numeric scalar strictly between 0 and 0.5
 #power: Defaults to 0.8. If provided, must be a numeric scalar strictly between 0.5 and 1
 ### OUTPUTS ###
-#bounds: data.frame consisting of ECI(alpha) and ROSE(alpha, power) boundaries (asymptotic or exact, depending on whether degees of freedom are offered)
+#bounds: data.frame consisting of CI boundaries (asymptotic or exact, depending on whether degees of freedom are offered)
 #test: Only generated if ROPE is provided; data.frame consisting of the t-statistic and TOST p-value for an equivalence test within the provided ROPE
 
 tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8) {
@@ -130,10 +130,6 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8) {
 
   }
 
-  ########################
-  ##### SUB-ROUTINES #####
-  ########################
-
   #If ROPE is a positive numeric scalar...
   if (length(ROPE) == 1) {
 
@@ -150,11 +146,12 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8) {
   }
 
   #Generate bounds dataframe
-  bounds = as.data.frame(matrix(nrow = 3, ncol = 2))
+  bounds = as.data.frame(matrix(nrow = 4, ncol = 2))
   colnames(bounds) = c("Lower Bound", "Upper Bound")
-  rownames(bounds) = c(paste0(round((1 - alpha)*100, 3), "% equivalence confidence interal (ECI)"),
-                       paste0(round((1 - alpha)*100, 3), "% confidence interal"),
-                       paste0(round((1 - alpha)*100, 3), "% region of statistical equivalence (ROSE) with ", round(power*100, 3), "% power"))
+  rownames(bounds) = c(paste0(round((1 - alpha)*100, 3), "% equivalence confidence interval (ECI)"),
+                       paste0(round((1 - alpha)*100, 3), "% confidence interval (CI)"),
+                       paste0(round((1 - alpha)*100, 3), "% ECI adjusted to", round(power*100, 3), "% power"),
+                       paste0(round((1 - alpha)*100, 3), "% CI adjusted to", round(power*100, 3), "% power"))
 
   #If the estimate is exactly midway between the lower and upper bounds of the ROPE...
   if (estimate == (ROPE[1] + ROPE[2])/2) {
@@ -170,6 +167,10 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8) {
     bound = ROPE[which((c(abs(estimate - ROPE[1]), abs(estimate - ROPE[2])) == min(c(abs(estimate - ROPE[1]), abs(estimate - ROPE[2])))))]
 
   }
+
+  ########################
+  ##### SUB-ROUTINES #####
+  ########################
 
   #If df is not provided...
   if ((is.na(df) | is.null(df))) {
@@ -189,9 +190,13 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8) {
     bounds[2, 1] = estimate - qnorm(p = 1 - alpha/2)*se
     bounds[2, 2] = estimate + qnorm(p = 1 - alpha/2)*se
 
-    #Generate the bounds of the ROSE
+    #Generate the bounds of the power-adjusted ECI
     bounds[3, 1] = ROSE(estimate, se, alpha, power)$ROSE["Lower bound"]
     bounds[3, 2] = ROSE(estimate, se, alpha, power)$ROSE["Upper bound"]
+
+    #Generate the bounds of the power-adjusted CI
+    bounds[4, 1] = ROSE(estimate, se, alpha/2, power)$ROSE["Lower bound"]
+    bounds[4, 2] = ROSE(estimate, se, alpha/2, power)$ROSE["Upper bound"]
 
     #Store the ROPE
     test[, 1] = rep(ROPE[1], 3)
@@ -269,7 +274,7 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8) {
     }
 
   #Print citation disclaimer
-  print(noquote("Asymptotically approximate equivalence confidence intervals (ECIs), regions of statistical equivalence (ROSEs), and three-sided testing (TST) results reported"))
+  print(noquote("Asymptotically approximate equivalence confidence intervals and three-sided testing (TST) results reported"))
   print(noquote("If using for academic/research purposes, please cite the paper underlying this program:"))
   print(noquote("Fitzgerald, Jack (2024). The Need for Equivalence Testing in Economics. Institute for Replication Discussion Paper Series No. 125. https://www.econstor.eu/handle/10419/296190."))
   #Store output
@@ -306,9 +311,13 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8) {
     bounds[2, 1] = estimate - qt(p = 1 - alpha/2, df = df)*se
     bounds[2, 2] = estimate + qt(p = 1 - alpha/2, df = df)*se
 
-    #Generate the bounds of the ROSE
+    #Generate the bounds of the power-adjusted ECI
     bounds[3, 1] = ROSE(estimate, se, alpha, power, df)$ROSE["Lower bound"]
     bounds[3, 2] = ROSE(estimate, se, alpha, power, df)$ROSE["Upper bound"]
+
+    #Generate the bounds of the power-adjusted CI
+    bounds[4, 1] = ROSE(estimate, se, alpha/2, power, df)$ROSE["Lower bound"]
+    bounds[4, 2] = ROSE(estimate, se, alpha/2, power, df)$ROSE["Upper bound"]
 
     #Store the ROPE
     test[, 1] = rep(ROPE[1], 3)
@@ -387,7 +396,7 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8) {
 
 
     #Print citation disclaimer
-    print(noquote("Exact equivalence confidence intervals (ECIs), regions of statistical equivalence (ROSEs), and three-sided testing (TST) results reported"))
+    print(noquote("Exact (equivalence) confidence intervals (ECIs) and three-sided testing (TST) results reported"))
     print(noquote("If using for academic/research purposes, please cite the paper underlying this program:"))
     print(noquote("Fitzgerald, Jack (2024). The Need for Equivalence Testing in Economics. Institute for Replication Discussion Paper Series No. 125. https://www.econstor.eu/handle/10419/296190."))
     #Store output
