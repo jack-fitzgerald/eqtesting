@@ -150,8 +150,8 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8) {
   colnames(bounds) = c("Lower Bound", "Upper Bound")
   rownames(bounds) = c(paste0(round((1 - alpha)*100, 3), "% equivalence confidence interval (ECI)"),
                        paste0(round((1 - alpha)*100, 3), "% confidence interval (CI)"),
-                       paste0(round((1 - alpha)*100, 3), "% ECI adjusted to", round(power*100, 3), "% power"),
-                       paste0(round((1 - alpha)*100, 3), "% CI adjusted to", round(power*100, 3), "% power"))
+                       paste0(round((1 - alpha)*100, 3), "% ECI adjusted to ", round(power*100, 3), "% power"),
+                       paste0(round((1 - alpha)*100, 3), "% CI adjusted to ", round(power*100, 3), "% power"))
 
   #If the estimate is exactly midway between the lower and upper bounds of the ROPE...
   if (estimate == (ROPE[1] + ROPE[2])/2) {
