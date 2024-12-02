@@ -7,7 +7,7 @@ library(devtools)
 install_github("jack-fitzgerald/eqtesting")
 ```
 
-lddtest also relies on the [rdd package](https://doi.org/10.32614/CRAN.package.rdd). You can install this dependency directly into R with the following code:
+lddtest also relies on the [data.table](https://doi.org/10.32614/CRAN.package.data.table) and [rdd](https://doi.org/10.32614/CRAN.package.rdd) packages. You can install these dependencies directly into R with the following code:
 ```
 install.packages("rdd")
 ```
