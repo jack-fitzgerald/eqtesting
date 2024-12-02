@@ -1,4 +1,4 @@
-llddtest = function(runvar, data, cutpoint, epsilon, alpha = 0.05, cluster = "", bootstrap = FALSE, breps = 1000, bin = NULL, bw = NULL, verbose = FALSE, plot = TRUE) {
+lddtest = function(runvar, data, cutpoint, epsilon, alpha = 0.05, cluster = "", bootstrap = FALSE, breps = 1000, bin = NULL, bw = NULL, verbose = FALSE, plot = TRUE) {
   
   #If runvar is not a single string...
   if (!is.character(runvar) | length(runvar) != 1) {
@@ -83,7 +83,7 @@ llddtest = function(runvar, data, cutpoint, epsilon, alpha = 0.05, cluster = "",
   test[1, "Theta"] = estimate
   
   #If bootstrap is unnecessary...
-  if (bootstrap == FALSE & breps == 1000 & is.na(cluster)) {
+  if (bootstrap == FALSE & cluster == "") {
     
     #Store the SE
     test[1, "SE"] = se
@@ -114,7 +114,7 @@ llddtest = function(runvar, data, cutpoint, epsilon, alpha = 0.05, cluster = "",
   }
   
   #If bootstrap is necessary...
-  if (bootstrap == TRUE | !is.na(cluster)) {
+  if (bootstrap == TRUE | cluster != "") {
     
     #Initialize bootstrap LDD list and count
     ldd_list = rep(NA, breps)
