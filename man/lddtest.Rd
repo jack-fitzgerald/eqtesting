@@ -48,7 +48,7 @@ Indicator for whether you wish for DCdensity to produce a plot. Optional. Boolea
   }
 }
 \value{
-\item{test}{1x6 data.frame showing the testing bounds, the logarithmic density discontinuity estimate and its standard error, and test statistics from the equivalence test.}
+\item{test}{1x8 data.frame showing the testing bounds, the logarithmic density discontinuity estimate and its standard error, equivalence confidence interval bounds, and test statistics from the equivalence test.}
 \item{conclusion}{String detailing the conclusion that can be derived from the equivalence test.}
 Running this code automatically prints a citation disclaimer.
 }
