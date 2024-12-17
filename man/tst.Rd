@@ -40,5 +40,5 @@ Fitzgerald, J. (2024). "The Need for Equivalence Testing in Economics." Institut
 Goeman, J. J., Solari, A., and Stijnen, T. (2024). "Three-sided hypothesis testing: Simultaneous testing of superiority, equivalence and inferiority." Statistics in Medicine 29(20), 2117-2125.
   }
 \author{
-Jack Fitzgerald, Vrije Universiteit Amsterdam
+Jack Fitzgerald, Vrije Universiteit Amsterdam and Tinbergen Institute
 }
