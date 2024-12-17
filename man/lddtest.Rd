@@ -59,5 +59,5 @@ Fitzgerald, Jack (2024). Manipulation Tests in Regression Discontinuity Design: 
 McCrary, Justin (2008). Manipulation of the running variable in the regression discontinuity design: A density test. Journal of Econometrics 142(2), 698-714.
   }
 \author{
-Jack Fitzgerald, Vrije Universiteit Amsterdam
+Jack Fitzgerald, Vrije Universiteit Amsterdam and Tinbergen Institute
 }
