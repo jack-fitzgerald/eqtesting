@@ -21,6 +21,20 @@ lddtest = function(runvar, data, cutpoint, epsilon, alpha = 0.05, cluster = "", 
     stop("'data' must be a data.frame")
     
   }
+  #If alpha is not a numeric scalar...
+  if (!(is.numeric(alpha) & length(alpha) == 1)) {
+    
+    #... then stop the function
+    stop("'alpha' must be a numeric scalar")
+    
+  }
+  #If alpha is not strictly between 0 and 0.5...
+  if (alpha <= 0 | alpha >= 0.5) {
+    
+    #... then stop the function
+    stop("'alpha' must be strictly between 0 and 0.5")
+    
+  }
   #If epsilon is not a numeric scalar...
   if (!(is.numeric(epsilon) & length(epsilon) == 1)) {
     
@@ -35,6 +49,27 @@ lddtest = function(runvar, data, cutpoint, epsilon, alpha = 0.05, cluster = "", 
     stop("'epsilon' must be strictly greater than 1")
     
   }
+  #If breps is not a numeric scalar...
+  if (!(is.numeric(breps) & length(breps) == 1)) {
+    
+    #... then stop the function
+    stop("'breps' must be a numeric scalar")
+    
+  }
+  #If breps is not greater than 1...
+  if (breps <= 1) {
+    
+    #... then stop the function
+    stop("'breps' must be strictly greater than 1")
+    
+  }
+  #If breps is not at least 1/alpha...
+  if (breps < 1/alpha) {
+    
+    #... then stop the function
+    stop("'breps' must be at least as large as 1/alpha")
+    
+  }
   #If bootstrap repetitions are changed but bootstrap itself is not specified as TRUE...
   if (breps != 1000 & bootstrap == FALSE) {
     
@@ -43,10 +78,34 @@ lddtest = function(runvar, data, cutpoint, epsilon, alpha = 0.05, cluster = "", 
     
   }
   
+  #Store total observations
+  if (cluster != "") {
+    
+    N = nrow(data[which(!is.na(data[, RV]) & !is.na(data[, cluster])), ])
+      
+  }
+  if (cluster == "") {
+    
+    N = nrow(data[which(!is.na(data[, RV])), ])
+    
+  }
+  
   #Run DCdensity
   mccrary = DCdensity(data[, runvar], cutpoint, bin = bin, bw = bw, verbose = verbose, plot = plot, ext.out = TRUE, htest = FALSE)
   estimate = mccrary$theta
   se = mccrary$se
+  
+  #Store effective observations
+  if (cluster != "") {
+    
+    N_eff = nrow(data[which(!is.na(data[, RV]) & !is.na(data[, cluster]) & data[, RV] >= cutoff - mccrary$bw & data[, RV] <= cutoff + mccrary$bw), ])
+    
+  }
+  if (cluster == "") {
+    
+    N_eff = nrow(data[which(!is.na(data[, RV]) & data[, RV] >= cutoff - mccrary$bw & data[, RV] <= cutoff + mccrary$bw), ])
+    
+  }
   
   #Organize ROPE
   ROPE = c(-log(epsilon), log(epsilon))
@@ -64,7 +123,7 @@ lddtest = function(runvar, data, cutpoint, epsilon, alpha = 0.05, cluster = "", 
     
   }
   #... otherwise...
-  else {
+  if (estimate != (ROPE[1] + ROPE[2])/2) {
     
     #... the closer bound to the estimate is the relevant TOST bound
     bound = ROPE[which((c(abs(estimate - ROPE[1]), abs(estimate - ROPE[2])) == min(c(abs(estimate - ROPE[1]), abs(estimate - ROPE[2])))))]
@@ -72,8 +131,12 @@ lddtest = function(runvar, data, cutpoint, epsilon, alpha = 0.05, cluster = "", 
   }
   
   #Generate test dataframe
-  test = as.data.frame(matrix(nrow = 1, ncol = 8))
-  colnames(test) = c("Epsilon Lower Bound", "Epsilon Upper Bound", "Theta", "SE", "ECI Lower Bound", "ECI Upper Bound", "Equivalence z-statistic", "p-value")
+  test = as.data.frame(matrix(nrow = 1, ncol = 10))
+  colnames(test) = c("N", "Effective N", "Epsilon Lower Bound", "Epsilon Upper Bound", "Theta", "SE", "ECI Lower Bound", "ECI Upper Bound", "Equivalence z-statistic", "p-value")
+  
+  #Store the sample sizes
+  test[1, "N"] = N
+  test[1, "Effective N"] = N_eff
   
   #Store the epsilon boundaries
   test[1, "Epsilon Lower Bound"] = ROPE[1]
@@ -81,6 +144,9 @@ lddtest = function(runvar, data, cutpoint, epsilon, alpha = 0.05, cluster = "", 
   
   #Store the estimate
   test[1, "Theta"] = estimate
+  
+  #Create null bootstrap estimates vector
+  boot_estimates = c()
   
   #If bootstrap is unnecessary...
   if (bootstrap == FALSE & cluster == "") {
@@ -128,7 +194,7 @@ lddtest = function(runvar, data, cutpoint, epsilon, alpha = 0.05, cluster = "", 
       
     }
     
-    #If cluster bootstrap is necessary
+    #If cluster bootstrap is necessary...
     if (cluster != "") {
       
       #Define bootstrap data
@@ -148,58 +214,72 @@ lddtest = function(runvar, data, cutpoint, epsilon, alpha = 0.05, cluster = "", 
         #Resample rows of the dataset with replacement
         bsample <- bdata[sample(.N, replace = TRUE)]
         
-        #Obtain the LDD estimate for the bootstrap sample, holding bin sizes and bandwidths constant
-        bDCdensity = DCdensity(bsample[[runvar]], bw = mccrary$bw, bin = mccrary$binsize, ext.out = TRUE, plot = FALSE)
+        #If the cutpoint lies in the range of the resampled running variable...
+        if (cutpoint > min(bsample[[runvar]]) & cutpoint < max(bsample[[runvar]])) {
         
-        #If the estimate is nonmissing...
-        if (!is.nan(bDCdensity$theta)) {
+          #Obtain the LDD estimate for the bootstrap sample, holding bin sizes and bandwidths constant
+          bDCdensity = try(DCdensity(bsample[[runvar]], cutpoint, bw = mccrary$bw, bin = mccrary$binsize, ext.out = TRUE, plot = FALSE))
           
-          #Store the estimate
-          ldd_list[i] = bDCdensity$theta
-          
-          #Up the count
-          i = i + 1
+          #If the estimate is nonmissing...
+          if (class(bDCdensity) != "try-error") {
+            if (!is.nan(bDCdensity$theta)) {
+              
+              #Store the estimate
+              ldd_list[i] = bDCdensity$theta
+              
+              #Up the count
+              i = i + 1
+              
+            }
+          }
           
         }
         
       }
       
       #If cluster bootstrap is necessary...
-      if(cluster != "") {
+      if (cluster != "") {
         
         #Identify unique clusters
         unique_clusters <- unique(bdata[[cluster]])
         
-        #Obtain resampling clusters
+        #Obtain resampling clusters with replacement
         sampled_clusters <- sample(unique_clusters, replace = TRUE)
         
-        #Count occurrences of each cluster in the sample
-        cluster_counts <- table(sampled_clusters)
-        
         #Obtain bootstrap sample
-        bsample <- do.call(rbind, lapply(names(cluster_counts), function(cl) {
-          # Select rows for this cluster and repeat them as needed
-          subset <- bdata[bdata[[cluster]] == cl]
-          subset[rep(1:.N, times = cluster_counts[cl]), ]
+        bsample <- do.call(rbind, lapply(sampled_clusters, function(cl) {
+          
+          bdata[bdata[[cluster]] == cl]
+          
         }))
         
-        #Obtain the LDD estimate for the bootstrap sample, holding bin sizes and bandwidths constant
-        bDCdensity = DCdensity(bsample[[runvar]], bw = mccrary$bw, bin = mccrary$binsize, ext.out = TRUE, plot = FALSE)
+        #If the cutpoint lies in the range of the resampled running variable...
+        if (cutpoint > min(bsample[[runvar]]) & cutpoint < max(bsample[[runvar]])) {
         
-        #If the estimate is nonmissing...
-        if (!is.nan(bDCdensity$theta)) {
-          
-          #Store the estimate
-          ldd_list[i] = bDCdensity$theta
-          
-          #Up the count
-          i = i + 1
+          #Obtain the LDD estimate for the bootstrap sample, holding bin sizes and bandwidths constant
+          bDCdensity = try(DCdensity(bsample[[runvar]], cutpoint, bw = mccrary$bw, bin = mccrary$binsize, ext.out = TRUE, plot = FALSE))
+      
+          #If the estimate is nonmissing...
+          if (class(bDCdensity) != "try-error") {
+            if (!is.nan(bDCdensity$theta)) {
+              
+              #Store the estimate
+              ldd_list[i] = bDCdensity$theta
+              
+              #Up the count
+              i = i + 1
+              
+            }
+          }
           
         }
         
       }
       
     }
+    
+    #Store bootstrap estimates
+    boot_estimates = ldd_list
     
     #Compute the bootstrap standard error
     test[1, "SE"] = sd(ldd_list)
@@ -229,7 +309,7 @@ lddtest = function(runvar, data, cutpoint, epsilon, alpha = 0.05, cluster = "", 
   if (test[1, "p-value"] > alpha) {
     
     #... then conclude the LDD is NOT significantly bounded
-    conclusion = paste0("The running variable's density discontinuity at the cutoff is NOT significantly bounded beneath a ratio of, ",
+    conclusion = paste0("The running variable's density discontinuity at the cutoff is NOT significantly bounded beneath a ratio of",
                         epsilon,
                         " at the ",
                         round(alpha*100, 3),
@@ -241,8 +321,8 @@ lddtest = function(runvar, data, cutpoint, epsilon, alpha = 0.05, cluster = "", 
   print(noquote("Please cite the paper underlying this program:"))
   print(noquote("Fitzgerald, Jack (2024). Manipulation Tests in Regression Discontinuity Design: The Need for Equivalence Testing. Institute for Replication Discussion Paper Series, No. 125. https://hdl.handle.net/10419/300277."))
   #Store output
-  output = list(test, conclusion)
-  names(output) = c("test", "conclusion")
+  output = list(test, conclusion, boot_estimates)
+  names(output) = c("test", "conclusion", "boot_estimates")
   #Return bounds
   return(output)
   
