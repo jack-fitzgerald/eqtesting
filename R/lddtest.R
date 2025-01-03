@@ -78,15 +78,15 @@ lddtest = function(runvar, data, cutpoint, epsilon, alpha = 0.05, cluster = "", 
     
   }
   
-  #Store total observations
+  #Store total obserunvarations
   if (cluster != "") {
     
-    N = nrow(data[which(!is.na(data[, RV]) & !is.na(data[, cluster])), ])
+    N = nrow(data[which(!is.na(data[, runvar]) & !is.na(data[, cluster])), ])
       
   }
   if (cluster == "") {
     
-    N = nrow(data[which(!is.na(data[, RV])), ])
+    N = nrow(data[which(!is.na(data[, runvar])), ])
     
   }
   
@@ -98,12 +98,12 @@ lddtest = function(runvar, data, cutpoint, epsilon, alpha = 0.05, cluster = "", 
   #Store effective observations
   if (cluster != "") {
     
-    N_eff = nrow(data[which(!is.na(data[, RV]) & !is.na(data[, cluster]) & data[, RV] >= cutoff - mccrary$bw & data[, RV] <= cutoff + mccrary$bw), ])
+    N_eff = nrow(data[which(!is.na(data[, runvar]) & !is.na(data[, cluster]) & data[, runvar] >= cutpoint - mccrary$bw & data[, runvar] <= cutpoint + mccrary$bw), ])
     
   }
   if (cluster == "") {
     
-    N_eff = nrow(data[which(!is.na(data[, RV]) & data[, RV] >= cutoff - mccrary$bw & data[, RV] <= cutoff + mccrary$bw), ])
+    N_eff = nrow(data[which(!is.na(data[, runvar]) & data[, runvar] >= cutpoint - mccrary$bw & data[, runvar] <= cutpoint + mccrary$bw), ])
     
   }
   
@@ -297,7 +297,7 @@ lddtest = function(runvar, data, cutpoint, epsilon, alpha = 0.05, cluster = "", 
   if (test[1, "p-value"] <= alpha) {
     
     #... then conclude the LDD is significantly bounded
-    conclusion = paste0("The running variable's density discontinuity at the cutoff is significantly bounded beneath a ratio of ",
+    conclusion = paste0("The running variable's density discontinuity at the cutpoint is significantly bounded beneath a ratio of ",
                         epsilon,
                         " at the ",
                         round(alpha*100, 3),
@@ -309,7 +309,7 @@ lddtest = function(runvar, data, cutpoint, epsilon, alpha = 0.05, cluster = "", 
   if (test[1, "p-value"] > alpha) {
     
     #... then conclude the LDD is NOT significantly bounded
-    conclusion = paste0("The running variable's density discontinuity at the cutoff is NOT significantly bounded beneath a ratio of",
+    conclusion = paste0("The running variable's density discontinuity at the cutpoint is NOT significantly bounded beneath a ratio of",
                         epsilon,
                         " at the ",
                         round(alpha*100, 3),
