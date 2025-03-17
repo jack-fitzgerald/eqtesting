@@ -7,7 +7,7 @@ Function to perform the three-sided testing (TST) procedure (Goeman, Solari, and
 tst performs the three-sided testing (TST) procedure (Goeman, Solari, and Stijnen 2010) for a given estimate. tst requires that the user specify an estimate, its standard error, and a region of practical equivalence (ROPE), within which the estimate would be deemed to be practically equivalent to zero. Once the ROPE is specified, the TST procedure combines a two one-sided tests (TOST) procedure testing whether the estimate is bounded in the ROPE with two further one-sided tests assessing whether the estimate is bounded outside the ROPE.
 }
 \usage{
-tst(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8)
+tst(estimate, se, ROPE, df = NA, alpha = 0.05)
 }
 \arguments{
   \item{estimate}{
@@ -25,19 +25,17 @@ Degrees of freedom. Numeric scalar, strictly greater than zero (if provided). If
   \item{alpha}{
 Statistical significance level. Numeric scalar, strictly between zero and one. Defaults to 0.05.
   }
-  \item{beta}{
-Power level. Numeric scalar, strictly between zero and one. Defaults to 0.8.
-  }
 }
 \value{
-\item{bounds}{2x2 data.frame showing the bounds of the (1 - alpha) ECI and the (1 - alpha) ROSE with the pre-specified power level.}
+\item{bounds}{3x2 data.frame showing the bounds of the (1 - alpha) TST confidence interval (to be used for reporting the estimate's precision), classic confidence interval, and equivalence confidence interval (the latter two of which are to be used for reaching conclusions about the estimate's practical significance).}
 \item{test}{3x5 data.frame showing the ROPE, test statistics, and p-values for each of the three tests in the TST procedure, as well as which of the three tests is relevant.}
 \item{conclusion}{String detailing the }
 Running this code automatically prints which test was employed (asymptotically approximate or exact) as well as a citation disclaimer.
 }
   \references{
-Fitzgerald, J. (2024). "The Need for Equivalence Testing in Economics." Institute for Replication Discusion Paper No. 125. https://www.econstor.eu/handle/10419/296190.
-Goeman, J. J., Solari, A., and Stijnen, T. (2024). "Three-sided hypothesis testing: Simultaneous testing of superiority, equivalence and inferiority." Statistics in Medicine 29(20), 2117-2125.
+Fitzgerald, J. (2025). "The Need for Equivalence Testing in Economics". MetaArXiv, https://doi.org/10.31222/osf.io/d7sqr_v1.
+Goeman, J. J., Solari, A., and Stijnen, T. (2010). "Three-sided hypothesis testing: Simultaneous testing of superiority, equivalence and inferiority." Statistics in Medicine 29(20), 2117-2125.
+Isager, P. & Fitzgerald, J. (2024). "Three-Sided Testing to Establish Practical Significance: A Tutorial." PsyArXiv, https://doi.org/10.31234/osf.io/8y925.
   }
 \author{
 Jack Fitzgerald, Vrije Universiteit Amsterdam and Tinbergen Institute
