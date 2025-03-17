@@ -14,5 +14,5 @@ install.packages("rdd")
 
 Please cite the papers underlying this package: <br/>
 Fitzgerald, J. (2025). "The Need for Equivalence Testing in Economics". <i>MetaArXiv</i>, https://doi.org/10.31222/osf.io/d7sqr_v1.
-Fitzgerald, Jack (2024). "Manipulation Tests in Regression Discontinuity Design: The Need for Equivalence Testing". <i>MetaArXiv</i>, https://doi.org/10.31222/osf.io/2dgrp_v1.
+Fitzgerald, J. (2025). "Manipulation Tests in Regression Discontinuity Design: The Need for Equivalence Testing". <i>MetaArXiv</i>, https://doi.org/10.31222/osf.io/2dgrp_v1.
 Isager, P., & Fitzgerald, J. (2024). "Three-Sided Testing to Establish Practical Significance: A Tutorial". <i>PsyArXiv</i>, https://doi.org/10.31234/osf.io/8y925. <br/>
