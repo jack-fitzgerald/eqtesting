@@ -4,19 +4,18 @@
 #ROPE: Can either be a strictly positive numeric scalar (interpreted as the width of a symmetric ROPE around zero), or a vector of two different numeric scalars
 #df: If added, must be a positive integer. If left blank, asymptotic normal approximations are reported. If provided, exact results are reported
 #alpha: Defaults to 0.05. If provided, must be a numeric scalar strictly between 0 and 0.5
-#power: Defaults to 0.8. If provided, must be a numeric scalar strictly between 0.5 and 1
 ### OUTPUTS ###
 #bounds: data.frame consisting of CI boundaries (asymptotic or exact, depending on whether degees of freedom are offered)
 #test: Only generated if ROPE is provided; data.frame consisting of the t-statistic and TOST p-value for an equivalence test within the provided ROPE
 
-tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8) {
+tst = function(estimate, se, ROPE, df = NA, alpha = 0.05) {
 
   ##################
   ##### ERRORS #####
   ##################
 
   #If any argument of the function is a list, data.frame, or matrix...
-  if (is.list(estimate) | is.list(se) | is.list(ROPE) | is.list(df) | is.list(alpha) | is.list(power) | is.data.frame(estimate) | is.data.frame(se) | is.data.frame(ROPE) | is.data.frame(df) | is.data.frame(alpha) | is.data.frame(power) | is.matrix(estimate) | is.matrix(se) | is.matrix(ROPE) | is.matrix(df) | is.matrix(alpha) | is.matrix(power)) {
+  if (is.list(estimate) | is.list(se) | is.list(ROPE) | is.list(df) | is.list(alpha) | is.data.frame(estimate) | is.data.frame(se) | is.data.frame(ROPE) | is.data.frame(df) | is.data.frame(alpha) | is.matrix(estimate) | is.matrix(se) | is.matrix(ROPE) | is.matrix(df) | is.matrix(alpha)) {
 
     #... then stop the function
     stop("'tst' does not accept lists, dataframes, or matrices")
@@ -58,21 +57,6 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8) {
 
     #... then stop the function
     stop("'alpha' must be strictly between 0 and 0.5")
-
-  }
-
-  #If power is not a numeric scalar...
-  if (!(is.numeric(power) & length(power) == 1)) {
-
-    #... then stop the function
-    stop("'power' must be a numeric scalar")
-
-  }
-  #If power is not between 0.5 and 1...
-  if (power <= 0.5 | power >= 1) {
-
-    #... then stop the function
-    stop("'power' must be strictly between 0.5 and 1")
 
   }
 
@@ -146,12 +130,11 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8) {
   }
 
   #Generate bounds dataframe
-  bounds = as.data.frame(matrix(nrow = 4, ncol = 2))
+  bounds = as.data.frame(matrix(nrow = 3, ncol = 2))
   colnames(bounds) = c("Lower Bound", "Upper Bound")
-  rownames(bounds) = c(paste0(round((1 - alpha)*100, 3), "% equivalence confidence interval (ECI)"),
-                       paste0(round((1 - alpha)*100, 3), "% confidence interval (CI)"),
-                       paste0(round((1 - alpha)*100, 3), "% ECI adjusted to ", round(power*100, 3), "% power"),
-                       paste0(round((1 - alpha)*100, 3), "% CI adjusted to ", round(power*100, 3), "% power"))
+  rownames(bounds) = c(paste0(round((1 - alpha)*100, 3), "% TST confidence interval (for precision)"),
+                       paste0(round((1 - alpha)*100, 3), "% equivalence confidence interval (for conclusions)"),
+                       paste0(round((1 - alpha)*100, 3), "% classic confidence interval (for conclusions)"))
 
   #If the estimate is exactly midway between the lower and upper bounds of the ROPE...
   if (estimate == (ROPE[1] + ROPE[2])/2) {
@@ -182,21 +165,55 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8) {
                        "Test: Estimate Bounded Within ROPE (TOST)",
                        "Test: Estimate Bounded Below ROPE (Two-Sided)")
 
+    #Generate the bounds of the TST CI
+    if (estimate < min(ROPE) + qnorm(p = 1 - alpha)*se) {
+
+      bounds[1, 1] = estimate - qnorm(p = 1 - alpha)*se
+      
+    }
+    if (estimate >= min(ROPE) + qnorm(p = 1 - alpha)*se & estimate <= min(ROPE) + qnorm(p = 1 - alpha/2)*se) {
+
+      bounds[1, 1] = min(ROPE)
+      
+    }
+    if (estimate > min(ROPE) + qnorm(p = 1 - alpha/2)*se & estimate < max(ROPE) + qnorm(p = 1 - alpha/2)*se) {
+
+      bounds[1, 1] = estimate - qnorm(p = 1 - alpha/2)*se
+      
+    }
+    if (estimate >= max(ROPE) + qnorm(p = 1 - alpha/2)*se) {
+
+      bounds[1, 1] = max(ROPE)
+      
+    }
+    if (estimate <= min(ROPE) - qnorm(p = 1 - alpha/2)*se) {
+
+      bounds[1, 2] = min(ROPE)
+      
+    }
+    if (estimate > min(ROPE) - qnorm(p = 1 - alpha/2)*se & estimate < max(ROPE) - qnorm(p = 1 - alpha/2)*se) {
+
+      bounds[1, 2] = estimate + qnorm(p = 1 - alpha/2)*se
+      
+    }
+    if (estimate >= max(ROPE) - qnorm(p = 1 - alpha/2)*se & estimate <= max(ROPE) - qnorm(p = 1 - alpha)) {
+
+      bounds[1, 2] = max(ROPE)
+      
+    }
+    if (estimate > max(ROPE) - qnorm(p = 1 - alpha)) {
+
+      bounds[1, 2] = estimate + qnorm(p = 1 - alpha)*se
+      
+    }
+    
     #Generate the bounds of the ECI
-    bounds[1, 1] = estimate - qnorm(p = 1 - alpha)*se
-    bounds[1, 2] = estimate + qnorm(p = 1 - alpha)*se
+    bounds[2, 1] = estimate - qnorm(p = 1 - alpha)*se
+    bounds[2, 2] = estimate + qnorm(p = 1 - alpha)*se
 
-    #Generate the bounds of the CI
-    bounds[2, 1] = estimate - qnorm(p = 1 - alpha/2)*se
-    bounds[2, 2] = estimate + qnorm(p = 1 - alpha/2)*se
-
-    #Generate the bounds of the power-adjusted ECI
-    bounds[3, 1] = ROSE(estimate, se, alpha, power)$ROSE["Lower bound"]
-    bounds[3, 2] = ROSE(estimate, se, alpha, power)$ROSE["Upper bound"]
-
-    #Generate the bounds of the power-adjusted CI
-    bounds[4, 1] = ROSE(estimate, se, alpha/2, power)$ROSE["Lower bound"]
-    bounds[4, 2] = ROSE(estimate, se, alpha/2, power)$ROSE["Upper bound"]
+    #Generate the bounds of the classic CI
+    bounds[3, 1] = estimate - qnorm(p = 1 - alpha/2)*se
+    bounds[3, 2] = estimate + qnorm(p = 1 - alpha/2)*se
 
     #Store the ROPE
     test[, 1] = rep(ROPE[1], 3)
@@ -303,21 +320,55 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8) {
                        "Test: Estimate Bounded Within ROPE (TOST)",
                        "Test: Estimate Bounded Below ROPE (Two-Sided)")
 
+    #Generate the bounds of the TST CI
+    if (estimate < min(ROPE) + qt(p = 1 - alpha, df = df)*se) {
+
+      bounds[1, 1] = estimate - qt(p = 1 - alpha, df = df)*se
+      
+    }
+    if (estimate >= min(ROPE) + qt(p = 1 - alpha, df = df)*se & estimate <= min(ROPE) + qt(p = 1 - alpha/2, df = df)*se) {
+
+      bounds[1, 1] = min(ROPE)
+      
+    }
+    if (estimate > min(ROPE) + qt(p = 1 - alpha/2, df = df)*se & estimate < max(ROPE) + qt(p = 1 - alpha/2, df = df)*se) {
+
+      bounds[1, 1] = estimate - qt(p = 1 - alpha/2, df = df)*se
+      
+    }
+    if (estimate >= max(ROPE) + qt(p = 1 - alpha/2, df = df)*se) {
+
+      bounds[1, 1] = max(ROPE)
+      
+    }
+    if (estimate <= min(ROPE) - qt(p = 1 - alpha/2, df = df)*se) {
+
+      bounds[1, 2] = min(ROPE)
+      
+    }
+    if (estimate > min(ROPE) - qt(p = 1 - alpha/2, df = df)*se & estimate < max(ROPE) - qt(p = 1 - alpha/2, df = df)*se) {
+
+      bounds[1, 2] = estimate + qt(p = 1 - alpha/2, df = df)*se
+      
+    }
+    if (estimate >= max(ROPE) - qt(p = 1 - alpha/2, df = df)*se & estimate <= max(ROPE) - qt(p = 1 - alpha, df = df)) {
+
+      bounds[1, 2] = max(ROPE)
+      
+    }
+    if (estimate > max(ROPE) - qt(p = 1 - alpha, df = df)) {
+
+      bounds[1, 2] = estimate + qt(p = 1 - alpha, df = df)*se
+      
+    }
+    
     #Generate the bounds of the ECI
-    bounds[1, 1] = estimate - qt(p = 1 - alpha, df = df)*se
-    bounds[1, 2] = estimate + qt(p = 1 - alpha, df = df)*se
+    bounds[2, 1] = estimate - qt(p = 1 - alpha, df = df)*se
+    bounds[2, 2] = estimate + qt(p = 1 - alpha, df = df)*se
 
-    #Generate the bounds of the ECI
-    bounds[2, 1] = estimate - qt(p = 1 - alpha/2, df = df)*se
-    bounds[2, 2] = estimate + qt(p = 1 - alpha/2, df = df)*se
-
-    #Generate the bounds of the power-adjusted ECI
-    bounds[3, 1] = ROSE(estimate, se, alpha, power, df)$ROSE["Lower bound"]
-    bounds[3, 2] = ROSE(estimate, se, alpha, power, df)$ROSE["Upper bound"]
-
-    #Generate the bounds of the power-adjusted CI
-    bounds[4, 1] = ROSE(estimate, se, alpha/2, power, df)$ROSE["Lower bound"]
-    bounds[4, 2] = ROSE(estimate, se, alpha/2, power, df)$ROSE["Upper bound"]
+    #Generate the bounds of the classic CI
+    bounds[3, 1] = estimate - qt(p = 1 - alpha/2, df = df)*se
+    bounds[3, 2] = estimate + qt(p = 1 - alpha/2, df = df)*se
 
     #Store the ROPE
     test[, 1] = rep(ROPE[1], 3)
@@ -397,8 +448,9 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, power = 0.8) {
 
     #Print citation disclaimer
     print(noquote("Exact (equivalence) confidence intervals (ECIs) and three-sided testing (TST) results reported"))
-    print(noquote("If using for academic/research purposes, please cite the paper underlying this program:"))
-    print(noquote("Fitzgerald, Jack (2024). The Need for Equivalence Testing in Economics. Institute for Replication Discussion Paper Series No. 125. https://www.econstor.eu/handle/10419/296190."))
+    print(noquote("If using for academic/research purposes, please cite the papers underlying this program:"))
+    print(noquote("Fitzgerald, J. (2025). The Need for Equivalence Testing in Economics. MetaArXiv, https://doi.org/10.31222/osf.io/d7sqr_v1."))
+    print(noquote("Isager, P. & Fitzgerald, J. (2024). Three-Sided Testing to Establish Practical Significance: A Tutorial. PsyArXiv, https://doi.org/10.31234/osf.io/8y925."))
     #Store output
     output = list(bounds, test, conclusion)
     names(output) = c("bounds", "test", "conclusion")
