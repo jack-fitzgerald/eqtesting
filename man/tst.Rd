@@ -29,7 +29,7 @@ Statistical significance level. Numeric scalar, strictly between zero and one. D
 \value{
 \item{bounds}{3x2 data.frame showing the bounds of the (1 - alpha) TST confidence interval (to be used for reporting the estimate's precision), classic confidence interval, and equivalence confidence interval (the latter two of which are to be used for reaching conclusions about the estimate's practical significance).}
 \item{test}{3x5 data.frame showing the ROPE, test statistics, and p-values for each of the three tests in the TST procedure, as well as which of the three tests is relevant.}
-\item{conclusion}{String detailing the }
+\item{conclusion}{String detailing the practical significance conclusion that can be reached about the estimate.}
 Running this code automatically prints which test was employed (asymptotically approximate or exact) as well as a citation disclaimer.
 }
   \references{
