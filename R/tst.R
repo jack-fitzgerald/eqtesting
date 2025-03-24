@@ -292,8 +292,9 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05) {
 
   #Print citation disclaimer
   print(noquote("Asymptotically approximate equivalence confidence intervals and three-sided testing (TST) results reported"))
-  print(noquote("If using for academic/research purposes, please cite the paper underlying this program:"))
+  print(noquote("If using for academic/research purposes, please cite the papers underlying this program:"))
   print(noquote("Fitzgerald, Jack (2024). The Need for Equivalence Testing in Economics. Institute for Replication Discussion Paper Series No. 125. https://www.econstor.eu/handle/10419/296190."))
+  print(noquote("Isager, P. & Fitzgerald, J. (2024). Three-Sided Testing to Establish Practical Significance: A Tutorial. PsyArXiv, https://doi.org/10.31234/osf.io/8y925."))
   #Store output
   output = list(bounds, test, conclusion)
   names(output) = c("bounds", "test", "conclusion")
