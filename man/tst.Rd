@@ -32,6 +32,9 @@ Statistical significance level. Numeric scalar, strictly between zero and one. D
 \item{conclusion}{String detailing the practical significance conclusion that can be reached about the estimate.}
 Running this code automatically prints which test was employed (asymptotically approximate or exact) as well as a citation disclaimer.
 }
+\examples{
+tst(1, 2, 3)
+}
   \references{
 Fitzgerald, J. (2025). "The Need for Equivalence Testing in Economics". MetaArXiv, https://doi.org/10.31222/osf.io/d7sqr_v1.
 Goeman, J. J., Solari, A., and Stijnen, T. (2010). "Three-sided hypothesis testing: Simultaneous testing of superiority, equivalence and inferiority." Statistics in Medicine 29(20), 2117-2125.
