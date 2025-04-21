@@ -1,6 +1,6 @@
 Package: eqtesting
 Type: Package
-Title: A suite for equivalence testing
+Title: A Suite for Equivalence Testing
 Version: 0.1.0
 Author: Jack Fitzgerald
 Authors@R: person(given = "Jack",
