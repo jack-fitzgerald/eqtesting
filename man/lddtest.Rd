@@ -72,4 +72,3 @@ McCrary, J. (2008). Manipulation of the running variable in the regression disco
 \author{
 Jack Fitzgerald, Vrije Universiteit Amsterdam and Tinbergen Institute
 }
-jack
