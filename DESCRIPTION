@@ -4,7 +4,7 @@ Title: A suite for equivalence testing
 Version: 0.1.0
 Author: Jack Fitzgerald
 Maintainer: Jack Fitzgerald <j.f.fitzgerald@vu.nl>
-Description: Performs three-sided testing and calculates regions of statistical equivalence for statistical estimates.
+Description: Contains several functions for equivalence testing and practical significance testing.
 License: CC BY 4.0
 Encoding: UTF-8
 LazyData: true
