@@ -54,11 +54,22 @@ Indicator for whether you wish for DCdensity to produce a plot. Optional. Boolea
 \item{boot_estimates}{Vector containing the bootstrap estimates. Empty if no bootstrap procedure is performed.}
 Running this code automatically prints a citation disclaimer.
 }
+\examples{
+#Load replication data from Cattaneo, Frandsen, & Titiunik (2015)
+data = read.csv(paste0("https://raw.githubusercontent.com/",
+"rdpackages-replication/CIT_2024_CUP/refs/heads/main/CIT_2024_CUP_locrand.csv"))
+
+#Run the logarithmic density discontinuity equivalence test on
+#lagged Democratic vote shares at the 50% victory cutoff
+lddtest("demvoteshlag1", data, 50, 1.5)
+}
   \references{
-Dimmery, Drew (2016). rdd: Regression discontinuity designs. https://doi.org/10.32614/CRAN.package.rdd.
-Fitzgerald, Jack (2024). Manipulation Tests in Regression Discontinuity Design: The Need for Equivalence Testing. Institute for Replication Discussion Paper Series, No. 125. https://hdl.handle.net/10419/300277.
-McCrary, Justin (2008). Manipulation of the running variable in the regression discontinuity design: A density test. Journal of Econometrics 142(2), 698-714.
+Cattaneo, M. D., Frandsen, B. R., & Titiunik, R. (2015). Randomization inference in the regression discontinuity design: An application to party advantages in the U.S. Senate. Journal of Causal Inference 3(1), 1-24.
+Dimmery, D. (2016). rdd: Regression discontinuity designs. https://doi.org/10.32614/CRAN.package.rdd.
+Fitzgerald, J. (2024). Manipulation tests in regression discontinuity design: The need for equivalence testing. MetaArXiv. https://doi.org/10.31222/osf.io/2dgrp_v1.
+McCrary, J. (2008). Manipulation of the running variable in the regression discontinuity design: A density test. Journal of Econometrics 142(2), 698-714.
   }
 \author{
 Jack Fitzgerald, Vrije Universiteit Amsterdam and Tinbergen Institute
 }
+jack
