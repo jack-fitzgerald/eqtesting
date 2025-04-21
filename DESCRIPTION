@@ -3,6 +3,10 @@ Type: Package
 Title: A suite for equivalence testing
 Version: 0.1.0
 Author: Jack Fitzgerald
+Authors@R: person(given = "Jack",
+                      family = "Fitzgerald",
+                      role = c("aut", "cre"),
+                      email = "j.f.fitzgerald@vu.nl")
 Maintainer: Jack Fitzgerald <j.f.fitzgerald@vu.nl>
 Description: Contains several functions for equivalence testing and practical significance testing.
 License: CC BY 4.0
