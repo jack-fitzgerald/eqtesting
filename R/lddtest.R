@@ -309,7 +309,7 @@ lddtest = function(runvar, data, cutpoint, epsilon, alpha = 0.05, cluster = "", 
   if (test[1, "p-value"] > alpha) {
     
     #... then conclude the LDD is NOT significantly bounded
-    conclusion = paste0("The running variable's density discontinuity at the cutpoint is NOT significantly bounded beneath a ratio of",
+    conclusion = paste0("The running variable's density discontinuity at the cutpoint is NOT significantly bounded beneath a ratio of ",
                         epsilon,
                         " at the ",
                         round(alpha*100, 3),
