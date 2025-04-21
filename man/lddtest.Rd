@@ -7,7 +7,8 @@ Logarithmic density discontinuity equivalence tests for regression discontinuity
 lddtest performs logarithmic density discontinuity equivalence tests (Fitzgerald 2024) for regression discontinuity designs. lddtest requires that the user specify a running variable, a cutoff point (where treatment kicks in when the running variable crosses that cutoff), and a maximal acceptable ratio between running variable density estimates to the left and right of the cutoff, beneath which the discontinuity would be deemed to be practically equivalent to zero. Once that maximal acceptable ratio is specified, the command utilizes the rdd package coding of DCdensity (Dimmery 2016), itself a McCrary (2008) density test, to estimate the logarithmic density discontinuity in the running variable at the cutoff. Thereafter, lddtest uses a two one-sided tests approach to assess whether the density discontinuity in the running variable at the cutoff is significantly bounded beneath the maximal acceptable ratio.
 }
 \usage{
-lddtest(runvar, data, cutpoint, epsilon, alpha = 0.05, cluster = "", bootstrap = FALSE, breps = 1000, bin = NULL, bw = NULL, verbose = FALSE, plot = TRUE)
+lddtest(runvar, data, cutpoint, epsilon, alpha = 0.05, cluster = "", bootstrap = FALSE, 
+breps = 1000, bin = NULL, bw = NULL, verbose = FALSE, plot = TRUE)
 }
 \arguments{
   \item{runvar}{
