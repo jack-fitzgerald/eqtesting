@@ -14,3 +14,4 @@ LazyData: true
 URL: https://github.com/jack-fitzgerald/eqtesting
 BugReports: https://github.com/jack-fitzgerald/eqtesting/issues
 Imports: data.table, rdd, stats
+Depends: data.table, rdd
