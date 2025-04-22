@@ -221,7 +221,7 @@ lddtest = function(runvar, data, cutpoint, epsilon, alpha = 0.05, cluster = "", 
           bDCdensity = try(DCdensity(bsample[[runvar]], cutpoint, bw = mccrary$bw, bin = mccrary$binsize, ext.out = TRUE, plot = FALSE))
           
           #If the estimate is nonmissing...
-          if (class(bDCdensity) != "try-error") {
+          if (!inherits(bDCdensity, "try-error")) {
             if (!is.nan(bDCdensity$theta)) {
               
               #Store the estimate
@@ -260,7 +260,7 @@ lddtest = function(runvar, data, cutpoint, epsilon, alpha = 0.05, cluster = "", 
           bDCdensity = try(DCdensity(bsample[[runvar]], cutpoint, bw = mccrary$bw, bin = mccrary$binsize, ext.out = TRUE, plot = FALSE))
       
           #If the estimate is nonmissing...
-          if (class(bDCdensity) != "try-error") {
+          if (!inherits(bDCdensity, "try-error")) {
             if (!is.nan(bDCdensity$theta)) {
               
               #Store the estimate
