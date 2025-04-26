@@ -7,7 +7,7 @@ Authors@R: person(given = "Jack",
                       role = c("aut", "cre"),
                       email = "j.f.fitzgerald@vu.nl")
 Maintainer: Jack Fitzgerald <j.f.fitzgerald@vu.nl>
-Description: Contains several functions for equivalence testing and practical significance testing.
+Description: Contains several functions for equivalence testing and practical significance testing. First, the tsti() command provides an automatic computation of three-sided testing results for a given estimate, standard error, and region of practical equivalence. Second, the lddtest() command performs logarithmic density discontinuity equivalence testing for regression discontinuity designs. 
 License: CC BY 4.0
 Encoding: UTF-8
 LazyData: true
