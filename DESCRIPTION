@@ -1,6 +1,6 @@
 Package: eqtesting
 Type: Package
-Title: A Suite for Equivalence Testing
+Title: Equivalence Testing Functions
 Version: 0.1.0
 Authors@R: person(given = "Jack",
                       family = "Fitzgerald",
