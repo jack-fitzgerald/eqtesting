@@ -319,7 +319,7 @@ lddtest = function(runvar, data, cutpoint, epsilon, alpha = 0.05, cluster = "", 
   
   #Print citation disclaimer
   message("Please cite the paper underlying this program:")
-  message("Fitzgerald, Jack (2025). Manipulation Tests in Regression Discontinuity Design: The Need for Equivalence Testing. MetaArXiv. https://doi.org/10.31222/osf.io/d7sqr_v1.")
+  message("Fitzgerald, Jack (2025). Manipulation Tests in Regression Discontinuity Design: The Need for Equivalence Testing. MetaArXiv. https://doi.org/10.31222/osf.io/2dgrp_v1.")
   #Store output
   output = list(test, conclusion, boot_estimates)
   names(output) = c("test", "conclusion", "boot_estimates")
