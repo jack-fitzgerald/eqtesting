@@ -1,7 +1,7 @@
 \name{lddtest}
 \alias{lddtest}
 \title{
-Logarithmic density discontinuity equivalence tests for regression discontinuity designs (Fitzgerald 2024)
+Logarithmic density discontinuity equivalence tests for regression discontinuity designs
 }
 \description{
 lddtest performs logarithmic density discontinuity equivalence tests (Fitzgerald 2024) for regression discontinuity designs. lddtest requires that the user specify a running variable, a cutoff point (where treatment kicks in when the running variable crosses that cutoff), and a maximal acceptable ratio between running variable density estimates to the left and right of the cutoff, beneath which the discontinuity would be deemed to be practically equivalent to zero. Once that maximal acceptable ratio is specified, the command utilizes the rdd package coding of DCdensity (Dimmery 2016), itself a McCrary (2008) density test, to estimate the logarithmic density discontinuity in the running variable at the cutoff. Thereafter, lddtest uses a two one-sided tests approach to assess whether the density discontinuity in the running variable at the cutoff is significantly bounded beneath the maximal acceptable ratio.
@@ -66,7 +66,7 @@ lddtest("demvoteshlag1", data, 50, 1.5)
   \references{
 Cattaneo, M. D., Frandsen, B. R., & Titiunik, R. (2015). Randomization inference in the regression discontinuity design: An application to party advantages in the U.S. Senate. Journal of Causal Inference 3(1), 1-24.
 Dimmery, D. (2016). rdd: Regression discontinuity designs. https://doi.org/10.32614/CRAN.package.rdd.
-Fitzgerald, J. (2024). Manipulation tests in regression discontinuity design: The need for equivalence testing. MetaArXiv. https://doi.org/10.31222/osf.io/2dgrp_v1.
+Fitzgerald, J. (2025). Manipulation tests in regression discontinuity design: The need for equivalence testing. MetaArXiv. https://doi.org/10.31222/osf.io/2dgrp_v1.
 McCrary, J. (2008). Manipulation of the running variable in the regression discontinuity design: A density test. Journal of Econometrics 142(2), 698-714.
   }
 \author{
