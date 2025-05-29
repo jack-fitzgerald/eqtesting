@@ -196,12 +196,12 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05) {
       bounds[1, 2] = estimate + qnorm(p = 1 - alpha/2)*se
       
     }
-    if (estimate >= max(ROPE) - qnorm(p = 1 - alpha/2)*se & estimate <= max(ROPE) - qnorm(p = 1 - alpha)) {
+    if (estimate >= max(ROPE) - qnorm(p = 1 - alpha/2)*se & estimate <= max(ROPE) - qnorm(p = 1 - alpha)*se) {
 
       bounds[1, 2] = max(ROPE)
       
     }
-    if (estimate > max(ROPE) - qnorm(p = 1 - alpha)) {
+    if (estimate > max(ROPE) - qnorm(p = 1 - alpha)*se) {
 
       bounds[1, 2] = estimate + qnorm(p = 1 - alpha)*se
       
@@ -352,12 +352,12 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05) {
       bounds[1, 2] = estimate + qt(p = 1 - alpha/2, df = df)*se
       
     }
-    if (estimate >= max(ROPE) - qt(p = 1 - alpha/2, df = df)*se & estimate <= max(ROPE) - qt(p = 1 - alpha, df = df)) {
+    if (estimate >= max(ROPE) - qt(p = 1 - alpha/2, df = df)*se & estimate <= max(ROPE) - qt(p = 1 - alpha, df = df)*se) {
 
       bounds[1, 2] = max(ROPE)
       
     }
-    if (estimate > max(ROPE) - qt(p = 1 - alpha, df = df)) {
+    if (estimate > max(ROPE) - qt(p = 1 - alpha, df = df)*se) {
 
       bounds[1, 2] = estimate + qt(p = 1 - alpha, df = df)*se
       
