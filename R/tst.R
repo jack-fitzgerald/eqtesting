@@ -6,9 +6,10 @@
 #alpha: Defaults to 0.05. If provided, must be a numeric scalar strictly between 0 and 0.5
 ### OUTPUTS ###
 #bounds: data.frame consisting of CI boundaries (asymptotic or exact, depending on whether degees of freedom are offered)
-#test: Only generated if ROPE is provided; data.frame consisting of the t-statistic and TOST p-value for an equivalence test within the provided ROPE
+#test: data.frame consisting of the t-statistics and p-values for TST within the provided ROPE
+#
 
-tst = function(estimate, se, ROPE, df = NA, alpha = 0.05) {
+tst = function(estimate, se, ROPE, df = NA, alpha = 0.05, plot = TRUE) {
 
   ##################
   ##### ERRORS #####
@@ -290,6 +291,35 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05) {
 
     }
 
+    #If plot is desired...
+    if (plot == TRUE) {
+
+      #... then generate the plot
+      plot(NA, ylim=c(0,1), 
+           xlim=c(1.25*min(c(bounds[1, "Lower Bound"], bounds[3, "Lower Bound"], ROPE[1])), 1.25*max(c(bounds[1, "Upper Bound"], bounds[3, "Upper Bound"], ROPE[2]))), 
+           bty="l", yaxt="n", ylab="",xlab="Estimate")
+      abline(v = ROPE[2], lty=2)
+      abline(v = ROPE[1], lty=2)
+      abline(v = 0, lty = 2, col="grey")
+      rect(bounds[1, "Lower Bound"], 
+           0.52,  
+           bounds[1, "Upper Bound"], 
+           0.48, 
+           col = "green", border = "green")
+      rect(bounds[3, "Lower Bound"], 
+           0.505,  
+           bounds[3, "Upper Bound"], 
+           0.495, 
+           col = "red", border = "red")
+      rect(bounds[2, "Lower Bound"], 
+           0.505,  
+           bounds[2, "Upper Bound"], 
+           0.495, 
+           col = "blue", border = "blue")
+        points(x = estimate, y=0.5, pch=15, cex=1.5)
+      
+    }
+
   #Print citation disclaimer
   message("Asymptotically approximate equivalence confidence intervals and three-sided testing (TST) results reported")
   message("If using for academic/research purposes, please cite the papers underlying this program:")
@@ -444,6 +474,35 @@ tst = function(estimate, se, ROPE, df = NA, alpha = 0.05) {
       #Report the result
       conclusion = "The estimate is significantly bounded below the ROPE."
 
+    }
+
+    #If plot is desired...
+    if (plot == TRUE) {
+
+      #... then generate the plot
+      plot(NA, ylim=c(0,1), 
+           xlim=c(1.25*min(c(bounds[1, "Lower Bound"], bounds[3, "Lower Bound"], ROPE[1])), 1.25*max(c(bounds[1, "Upper Bound"], bounds[3, "Upper Bound"], ROPE[2]))), 
+           bty="l", yaxt="n", ylab="",xlab="Estimate")
+      abline(v = ROPE[2], lty=2)
+      abline(v = ROPE[1], lty=2)
+      abline(v = 0, lty = 2, col="grey")
+      rect(bounds[1, "Lower Bound"], 
+           0.52,  
+           bounds[1, "Upper Bound"], 
+           0.48, 
+           col = "green", border = "green")
+      rect(bounds[3, "Lower Bound"], 
+           0.505,  
+           bounds[3, "Upper Bound"], 
+           0.495, 
+           col = "red", border = "red")
+      rect(bounds[2, "Lower Bound"], 
+           0.505,  
+           bounds[2, "Upper Bound"], 
+           0.495, 
+           col = "blue", border = "blue")
+        points(x = estimate, y=0.5, pch=15, cex=1.5)
+      
     }
 
 
