@@ -1,7 +1,7 @@
 Package: eqtesting
 Type: Package
 Title: Equivalence Testing Functions
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: c(person(given = "Jack",
                         family = "Fitzgerald",
                         role = c("aut", "cre"),
@@ -16,5 +16,4 @@ Encoding: UTF-8
 LazyData: true
 URL: https://github.com/jack-fitzgerald/eqtesting
 BugReports: https://github.com/jack-fitzgerald/eqtesting/issues
-Imports: graphics, stats
-Depends: data.table, rdd
+Imports: data.table, graphics, rdd, stats
