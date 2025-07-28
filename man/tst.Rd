@@ -25,6 +25,9 @@ Degrees of freedom. Numeric scalar, strictly greater than zero (if provided). If
   \item{alpha}{
 Statistical significance level. Numeric scalar, strictly between zero and one. Defaults to 0.05.
   }
+  \item{plot}{
+Indicates whether a plot with equivalence, classical, and TST confidence intervals should be shown alongside the estimate and the ROPE bounds. Logical, defaults to TRUE.
+  }
 }
 \value{
 \item{bounds}{3x2 data.frame showing the bounds of the (1 - alpha) TST confidence interval (to be used for reporting the estimate's precision), classic confidence interval, and equivalence confidence interval (the latter two of which are to be used for reaching conclusions about the estimate's practical significance).}
