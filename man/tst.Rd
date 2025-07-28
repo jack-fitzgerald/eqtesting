@@ -7,7 +7,7 @@ Function to perform the three-sided testing (TST) procedure (Goeman, Solari, and
 tst performs the three-sided testing (TST) procedure (Goeman, Solari, and Stijnen 2010) for a given estimate. tst requires that the user specify an estimate, its standard error, and a region of practical equivalence (ROPE), within which the estimate would be deemed to be practically equivalent to zero. Once the ROPE is specified, the TST procedure combines a two one-sided tests (TOST) procedure testing whether the estimate is bounded in the ROPE with two further one-sided tests assessing whether the estimate is bounded outside the ROPE.
 }
 \usage{
-tst(estimate, se, ROPE, df = NA, alpha = 0.05)
+tst(estimate, se, ROPE, df = NA, alpha = 0.05, plot = TRUE)
 }
 \arguments{
   \item{estimate}{
