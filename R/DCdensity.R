@@ -1,4 +1,4 @@
-#' Ported from the last version of Drew Dimmery's package rdd before it stopped being maintained
+#' Ported from the last version of Drew Dimmery's package rdd before it stopped being maintained on CRAN
 #' McCrary Sorting Test
 #' 
 #' \code{DCdensity} implements the McCrary (2008) sorting test.
