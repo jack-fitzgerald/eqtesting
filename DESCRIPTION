@@ -16,4 +16,4 @@ Encoding: UTF-8
 LazyData: true
 URL: https://github.com/jack-fitzgerald/eqtesting
 BugReports: https://github.com/jack-fitzgerald/eqtesting/issues
-Imports: data.table, graphics, rdd, stats
+Imports: data.table, graphics, stats
